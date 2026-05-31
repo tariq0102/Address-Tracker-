@@ -45,7 +45,7 @@ const Footer = () => {
         {/* Bottom Row */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-2 text-sm text-gray-500">
           <p>Built on <span className="text-purple-400 font-medium">Solana Blockchain</span></p>
-          <p>Made with ❤️ by <span className="text-white font-medium">M Tariq Ali</span> & <span className="text-white font-medium">M Toufeeq</span></p>
+          <p>Made with ❤️ by <span className="text-white font-medium">M Tariq Ali
         </div>
 
       </div>
