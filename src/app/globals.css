@@ -2,27 +2,41 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
 :root {
   margin: 0%;
   padding: 0%;
-  background: #040112;
+  background: #0a0a1a;
   color: white;
 }
 
+body {
+  font-family: 'Inter', sans-serif;
+  background: #0a0a1a;
+  color: #e2e8f0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
 ::-webkit-scrollbar {
-  width: 3px;
+  width: 4px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #040112;
+  background: #0a0a1a;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: red;
+  background: linear-gradient(180deg, #9945ff, #14f195);
+  border-radius: 10px;
 }
 
 @font-face {
   font-family: "Starwars";
-
   src: url("../../public/fonts/Starjedi.ttf");
 }
