@@ -1,168 +1,91 @@
 "use client";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import dynamic from "next/dynamic";
+import { Menu, X } from "lucide-react";
+import {
+  Drawer,
+  DrawerBody,
+  DrawerContent,
+  DrawerCloseButton,
+  DrawerOverlay,
+  useDisclosure,
+  Flex,
+} from "@chakra-ui/react";
+
 const DynamicWalletButton = dynamic(
   () => import("@/components/Buttons/WalletButton"),
   { ssr: false }
 );
-import {
-  Drawer,
-  DrawerBody,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerOverlay,
-  DrawerContent,
-  DrawerCloseButton,
-  useDisclosure,
-  Flex,
-} from "@chakra-ui/react";
-import { CrossIcon, Menu, X } from "lucide-react";
 
 const Navbar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef<any>();
   const pathname = usePathname();
 
-  useEffect(() => {
-    console.log(pathname.endsWith("/"));
-    onClose();
-  }, [pathname]);
-
-  const openModal = () => {
-    if (isOpen) {
-      onClose();
-    } else {
-      onOpen();
-    }
-  };
+  const navLinks = [
+    { href: "/", label: "Home" },
+    { href: "/wallet", label: "Wallet Tracker" },
+    { href: "/transactions", label: "Transactions" },
+  ];
 
   return (
-    <div className="w-full h-fit py-4 fixed top-0 backdrop-blur-md z-20 px-6">
-      <div className="w-full h-full flex flex-row items-center justify-between m-auto px-[10px]">
-        <div className="flex justify-center items-center">
-          <Image
-            src="/Lard_Vader.webp"
-            alt="logo"
-            width={60}
-            height={60}
-            className="cursor-pointer hover:animate-slowspin rounded-full"
-          />
-          <span className="font-bold ml-[10px] block text-green-500">
-            Starsol&nbsp;tracker
+    <div className="w-full h-fit py-4 fixed top-0 backdrop-blur-md z-20 px-6 border-b border-white/10">
+      <div className="w-full h-full flex flex-row items-center justify-between max-w-6xl mx-auto">
+        
+        {/* Logo */}
+        <Link href="/" className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-600 to-green-400 flex items-center justify-center font-bold text-white text-lg">
+            S
+          </div>
+          <span className="font-bold text-white text-lg tracking-tight">
+            Solana<span className="text-purple-400">Tracker</span>
           </span>
-        </div>
+        </Link>
 
-        <div
-          className="hidden w-full lg:flex gap-4 text-sm md:w-auto justify-between items-center"
-          id="navbar-default"
-        >
-          <Link href="/">
-            <p
-              className={`block py-2 px-3 rounded md:bg-transparent md:p-0 ${
-                pathname === "/"
-                  ? "text-yellow-500"
-                  : "text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-500 dark:text-red-600 md:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-red-600 md:dark:hover:bg-transparent"
-              }`}
-            >
-              Home
-            </p>
-          </Link>
-          <Link href="/wallet">
-            <p
-              className={`block py-2 px-3 rounded md:bg-transparent md:p-0 ${
-                pathname === "/wallet"
-                  ? "text-yellow-500"
-                  : "text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-500 dark:text-red-600 md:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-red-600 md:dark:hover:bg-transparent"
-              }`}
-            >
-              Wallet&nbsp;tracker
-            </p>
-          </Link>
-          <Link href="/transactions">
-            <p
-              className={`block py-2 px-3 rounded md:bg-transparent md:p-0 ${
-                pathname === "/transactions"
-                  ? "text-yellow-500"
-                  : "text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-500 dark:text-red-600 md:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-red-600 md:dark:hover:bg-transparent"
-              }`}
-            >
-              Transactions
-            </p>
-          </Link>
+        {/* Desktop Links */}
+        <div className="hidden lg:flex gap-6 items-center text-sm">
+          {navLinks.map((link) => (
+            <Link key={link.href} href={link.href}>
+              <p className={`py-2 px-3 rounded-lg transition font-medium ${
+                pathname === link.href
+                  ? "text-white bg-purple-600/20 border border-purple-500/30"
+                  : "text-gray-400 hover:text-white hover:bg-white/5"
+              }`}>
+                {link.label}
+              </p>
+            </Link>
+          ))}
           <DynamicWalletButton />
         </div>
-        <div className="lg:hidden flex ">
+
+        {/* Mobile Menu */}
+        <div className="lg:hidden">
           {!isOpen ? (
-            <Menu
-              size={24}
-              style={{ color: "#22c55e" }}
-              className="cursor-pointer"
-              ref={btnRef}
-              onClick={openModal}
-            />
+            <Menu size={24} className="text-purple-400 cursor-pointer" ref={btnRef} onClick={onOpen} />
           ) : (
-            <X
-              size={24}
-              style={{ color: "#22c55e" }}
-              className="cursor-pointer"
-              ref={btnRef}
-              onClick={openModal}
-            />
+            <X size={24} className="text-purple-400 cursor-pointer" ref={btnRef} onClick={onClose} />
           )}
 
-          <Drawer
-            isOpen={isOpen}
-            placement="right"
-            onClose={onClose}
-            finalFocusRef={btnRef}
-          >
+          <Drawer isOpen={isOpen} placement="right" onClose={onClose} finalFocusRef={btnRef}>
             <DrawerOverlay />
-            <DrawerContent bg={"black"} maxW={"80%"}>
-              <DrawerCloseButton />
-
+            <DrawerContent bg={"#0a0a1a"} maxW={"75%"} borderLeft={"1px solid rgba(255,255,255,0.1)"}>
+              <DrawerCloseButton color="white" />
               <DrawerBody>
-                <Flex
-                  direction={"column"}
-                  id="navbar-default"
-                  className="mt-20 "
-                >
-                  <Link href="/">
-                    <p
-                      className={`block py-2 px-3 rounded md:bg-transparent md:p-0 ${
-                        pathname === "/"
-                          ? "text-yellow-500"
-                          : "text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-500 dark:text-red-600 md:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-red-600 md:dark:hover:bg-transparent"
-                      }`}
-                    >
-                      Home
-                    </p>
-                  </Link>
-                  <Link href="/wallet">
-                    <p
-                      className={`block py-2 px-3 rounded md:bg-transparent md:p-0 ${
-                        pathname === "/wallet"
-                          ? "text-yellow-500"
-                          : "text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-500 dark:text-red-600 md:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-red-600 md:dark:hover:bg-transparent"
-                      }`}
-                    >
-                      Wallet&nbsp;tracker
-                    </p>
-                  </Link>
-                  <Link href="/transactions">
-                    <p
-                      className={`block py-2 px-3 rounded md:bg-transparent md:p-0 ${
-                        pathname === "/transactions"
-                          ? "text-yellow-500"
-                          : "text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-green-500 dark:text-red-600 md:dark:hover:text-green-500 dark:hover:bg-gray-700 dark:hover:text-red-600 md:dark:hover:bg-transparent"
-                      }`}
-                    >
-                      Transactions
-                    </p>
-                  </Link>
-                  <div className="px-3">
+                <Flex direction={"column"} gap={2} className="mt-16">
+                  {navLinks.map((link) => (
+                    <Link key={link.href} href={link.href} onClick={onClose}>
+                      <p className={`py-3 px-4 rounded-xl transition font-medium ${
+                        pathname === link.href
+                          ? "text-white bg-purple-600/20 border border-purple-500/30"
+                          : "text-gray-400 hover:text-white hover:bg-white/5"
+                      }`}>
+                        {link.label}
+                      </p>
+                    </Link>
+                  ))}
+                  <div className="mt-4">
                     <DynamicWalletButton />
                   </div>
                 </Flex>
@@ -170,6 +93,7 @@ const Navbar = () => {
             </DrawerContent>
           </Drawer>
         </div>
+
       </div>
     </div>
   );
