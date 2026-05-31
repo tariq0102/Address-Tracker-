@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { Menu, X, Sun, Moon } from "lucide-react";
 
@@ -10,9 +10,8 @@ const DynamicWalletButton = dynamic(
   { ssr: false }
 );
 
-const Navbar = () => {
+const Navbar = ({ isDark, setIsDark }: { isDark: boolean, setIsDark: (v: boolean) => void }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isDark, setIsDark] = useState(true);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -25,19 +24,20 @@ const Navbar = () => {
     { href: "/transactions", label: "Transactions" },
   ];
 
+  const bg = isDark ? "#0a0a1a" : "#ffffff";
+  const border = isDark ? "rgba(153,69,255,0.2)" : "rgba(153,69,255,0.3)";
+  const textColor = isDark ? "#94a3b8" : "#64748b";
+
   return (
     <>
-      {/* Navbar */}
       <div style={{
         width: "100%",
         padding: "14px 24px",
         position: "fixed",
-        top: 0,
-        left: 0,
-        right: 0,
+        top: 0, left: 0, right: 0,
         zIndex: 9999,
-        background: "#0a0a1a",
-        borderBottom: "1px solid rgba(153,69,255,0.2)",
+        background: bg,
+        borderBottom: `1px solid ${border}`,
       }}>
         <div style={{
           maxWidth: "1100px",
@@ -56,13 +56,13 @@ const Navbar = () => {
               fontWeight: 800, color: "white", fontSize: "18px",
               fontFamily: "Inter, sans-serif"
             }}>S</div>
-            <span style={{ fontFamily: "Inter, sans-serif", fontWeight: 700, color: "white", fontSize: "17px" }}>
+            <span style={{ fontFamily: "Inter, sans-serif", fontWeight: 700, color: isDark ? "white" : "#1a1a2e", fontSize: "17px" }}>
               Solana<span style={{ color: "#9945ff" }}>Tracker</span>
             </span>
           </Link>
 
           {/* Desktop Links */}
-          <div style={{ display: "flex", alignItems: "center", gap: "8px" }} className="hidden lg:flex">
+          <div className="hidden lg:flex" style={{ display: "flex", alignItems: "center", gap: "8px" }}>
             {navLinks.map((link) => (
               <Link key={link.href} href={link.href} style={{ textDecoration: "none" }}>
                 <span style={{
@@ -72,7 +72,7 @@ const Navbar = () => {
                   padding: "8px 16px",
                   borderRadius: "10px",
                   display: "block",
-                  color: pathname === link.href ? "white" : "#94a3b8",
+                  color: pathname === link.href ? "white" : textColor,
                   background: pathname === link.href ? "rgba(153,69,255,0.15)" : "transparent",
                   border: pathname === link.href ? "1px solid rgba(153,69,255,0.3)" : "1px solid transparent",
                   transition: "all 0.2s",
@@ -81,39 +81,35 @@ const Navbar = () => {
               </Link>
             ))}
 
-            {/* Dark/Light Toggle */}
-            <button
-              onClick={() => setIsDark(!isDark)}
-              style={{
-                background: "rgba(153,69,255,0.15)",
-                border: "1px solid rgba(153,69,255,0.3)",
-                borderRadius: "10px",
-                padding: "8px 12px",
-                cursor: "pointer",
-                color: "#9945ff",
-                display: "flex",
-                alignItems: "center"
-              }}>
+            {/* Theme Toggle */}
+            <button onClick={() => setIsDark(!isDark)} style={{
+              background: "rgba(153,69,255,0.15)",
+              border: "1px solid rgba(153,69,255,0.3)",
+              borderRadius: "10px",
+              padding: "8px 12px",
+              cursor: "pointer",
+              color: "#9945ff",
+              display: "flex",
+              alignItems: "center"
+            }}>
               {isDark ? <Sun size={16} /> : <Moon size={16} />}
             </button>
 
             <DynamicWalletButton />
           </div>
 
-          {/* Mobile: Toggle + Hamburger */}
-          <div style={{ display: "flex", alignItems: "center", gap: "12px" }} className="lg:hidden">
-            <button
-              onClick={() => setIsDark(!isDark)}
-              style={{
-                background: "rgba(153,69,255,0.15)",
-                border: "1px solid rgba(153,69,255,0.3)",
-                borderRadius: "8px",
-                padding: "6px 10px",
-                cursor: "pointer",
-                color: "#9945ff",
-                display: "flex",
-                alignItems: "center"
-              }}>
+          {/* Mobile Buttons */}
+          <div className="lg:hidden" style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <button onClick={() => setIsDark(!isDark)} style={{
+              background: "rgba(153,69,255,0.15)",
+              border: "1px solid rgba(153,69,255,0.3)",
+              borderRadius: "8px",
+              padding: "6px 10px",
+              cursor: "pointer",
+              color: "#9945ff",
+              display: "flex",
+              alignItems: "center"
+            }}>
               {isDark ? <Sun size={15} /> : <Moon size={15} />}
             </button>
 
@@ -127,41 +123,33 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Drawer — بالکل الگ div */}
+      {/* Mobile Drawer */}
       {isOpen && (
         <div style={{
           position: "fixed",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
+          top: 0, left: 0, right: 0, bottom: 0,
           zIndex: 99998,
           background: "rgba(0,0,0,0.85)",
         }} onClick={() => setIsOpen(false)}>
           <div style={{
             position: "absolute",
-            top: 0,
-            right: 0,
-            bottom: 0,
+            top: 0, right: 0, bottom: 0,
             width: "75%",
             maxWidth: "300px",
-            background: "#0a0a1a",
-            borderLeft: "1px solid rgba(153,69,255,0.2)",
+            background: bg,
+            borderLeft: `1px solid ${border}`,
             padding: "80px 20px 20px",
             zIndex: 99999,
           }} onClick={(e) => e.stopPropagation()}>
 
-            {/* Close Button */}
-            <button
-              onClick={() => setIsOpen(false)}
-              style={{
-                position: "absolute", top: "16px", right: "16px",
-                background: "none", border: "none", cursor: "pointer", color: "white"
-              }}>
+            <button onClick={() => setIsOpen(false)} style={{
+              position: "absolute", top: "16px", right: "16px",
+              background: "none", border: "none", cursor: "pointer",
+              color: isDark ? "white" : "#1a1a2e"
+            }}>
               <X size={22} />
             </button>
 
-            {/* Mobile Nav Links */}
             <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
               {navLinks.map((link) => (
                 <Link key={link.href} href={link.href} style={{ textDecoration: "none" }} onClick={() => setIsOpen(false)}>
@@ -172,7 +160,7 @@ const Navbar = () => {
                     padding: "12px 16px",
                     borderRadius: "10px",
                     display: "block",
-                    color: pathname === link.href ? "white" : "#94a3b8",
+                    color: pathname === link.href ? "white" : textColor,
                     background: pathname === link.href ? "rgba(153,69,255,0.15)" : "transparent",
                     border: pathname === link.href ? "1px solid rgba(153,69,255,0.3)" : "1px solid transparent",
                   }}>{link.label}</span>
