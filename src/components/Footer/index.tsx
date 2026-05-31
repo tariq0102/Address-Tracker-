@@ -1,41 +1,53 @@
-import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-type Props = {};
-
-const Footer = (props: Props) => {
+const Footer = () => {
   return (
-    <div className="w-full mt-auto flex flex-col md:flex-row  h-full py-8 justify-center items-center gap-4 font-medium px-4 md:px-12 border-t-[1px] border-slate-900 bg-[#040112]">
-      <div className="w-full max-w-screen-xl  md:p-4 ">
-        <div className="sm:flex sm:items-center sm:justify-between">
-          <div className="flex justify-center items-center">
-            <Image
-              src="/Lard_Vader.webp"
-              alt="logo"
-              width={60}
-              height={60}
-              className="cursor-pointer hover:animate-slowspin rounded-full"
-            />
-
-            <span className="font-bold ml-[10px] block text-gray-300">
-              starsol tracker
+    <div className="w-full mt-auto flex flex-col h-full py-10 px-6 border-t border-white/10 bg-[#0a0a1a]">
+      <div className="w-full max-w-6xl mx-auto">
+        
+        {/* Top Row */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
+          
+          {/* Logo */}
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-600 to-green-400 flex items-center justify-center font-bold text-white text-lg">
+              S
+            </div>
+            <span className="font-bold text-white text-lg tracking-tight">
+              Solana<span className="text-purple-400">Tracker</span>
             </span>
           </div>
-          <ul className="flex flex-wrap gap-2 justify-center items-center md:gap-8 items-center mb-6 text-base text-gray-500 sm:mb-0 dark:text-gray-400">
+
+          {/* Links */}
+          <ul className="flex gap-6 text-sm text-gray-400">
             <li>
-              <Link href="/about">About</Link>
+              <Link href="/about" className="hover:text-white transition">
+                About
+              </Link>
             </li>
             <li>
-              <Link href="/privacy">privacy policy</Link>
+              <Link href="/privacy" className="hover:text-white transition">
+                Privacy Policy
+              </Link>
             </li>
             <li>
-              <Link href="/contact">contact</Link>
+              <Link href="/contact" className="hover:text-white transition">
+                Contact
+              </Link>
             </li>
           </ul>
         </div>
-        <hr className="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
-     <p className="w-full text-center text-sm">Made with ❤️ by M Tariq Ali and M Toufeeq </p>
+
+        {/* Divider */}
+        <hr className="my-6 border-white/10" />
+
+        {/* Bottom Row */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-2 text-sm text-gray-500">
+          <p>Built on <span className="text-purple-400 font-medium">Solana Blockchain</span></p>
+          <p>Made with ❤️ by <span className="text-white font-medium">M Tariq Ali</span> & <span className="text-white font-medium">M Toufeeq</span></p>
+        </div>
+
       </div>
     </div>
   );
